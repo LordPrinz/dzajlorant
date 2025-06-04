@@ -2,20 +2,96 @@
 
 
 #include "DShooter.h"
-
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 ADShooter::ADShooter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>("Spring Arm");
+	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->bUsePawnControlRotation = true;
+	
+	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
+	Camera->SetupAttachment(SpringArm);
+
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	GetCharacterMovement()->AirControl = 0.8f;
 }
 
 // Called when the game starts or when spawned
 void ADShooter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(InputMapping, 0);
+		}
+	}
+}
+
+void ADShooter::Move(const FInputActionValue& InputValue)
+{
+	FVector2D InputVector = InputValue.Get<FVector2D>();
+
+	if (IsValid(Controller))
+	{
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+		AddMovementInput(ForwardDirection, InputVector.Y);
+		AddMovementInput(RightDirection, InputVector.X);
+	}
 	
+}
+
+void ADShooter::Look(const FInputActionValue& InputValue)
+{
+	FVector2D InputVector = InputValue.Get<FVector2D>();
+
+	if (IsValid(Controller))
+	{
+		AddControllerYawInput(InputVector.X);
+		AddControllerPitchInput(InputVector.Y); 
+	}
+}
+
+void ADShooter::Jump()
+{
+	Super::Jump();
+	
+	if (bIsCrouched)
+	{
+		Super::UnCrouch();	
+	}
+}
+
+void ADShooter::Crouch()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Podpiąłem CrouchAction do metod Crouch/StopCrouch"));
+	Super::Crouch();
+}
+
+void ADShooter::StopCrouch()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Odpiąłem CrouchAction do metod Crouch/StopCrouch"));
+	if (bIsCrouched)
+	{
+		Super::UnCrouch();	
+	}
 }
 
 // Called every frame
@@ -28,5 +104,14 @@ void ADShooter::Tick(float DeltaTime)
 void ADShooter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	if (UEnhancedInputComponent* Input = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADShooter::Move);
+		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADShooter::Look);
+		Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ADShooter::Jump);
+		Input->BindAction(CrouchAction, ETriggerEvent::Started, this, &ADShooter::Crouch);
+		Input->BindAction(CrouchAction, ETriggerEvent::Canceled, this, &ADShooter::StopCrouch);
+	}
 }
 
