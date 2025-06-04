@@ -81,13 +81,11 @@ void ADShooter::Jump()
 
 void ADShooter::Crouch()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Podpiąłem CrouchAction do metod Crouch/StopCrouch"));
 	Super::Crouch();
 }
 
 void ADShooter::StopCrouch()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Odpiąłem CrouchAction do metod Crouch/StopCrouch"));
 	if (bIsCrouched)
 	{
 		Super::UnCrouch();	
