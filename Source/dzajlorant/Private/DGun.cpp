@@ -17,6 +17,11 @@ ADGun::ADGun()
 	SkeletalMesh->SetupAttachment(Root);
 }
 
+void ADGun::PullTrigger()
+{
+	UE_LOG(LogTemp, Warning, TEXT("You ve ben shot"));
+}
+
 // Called when the game starts or when spawned
 void ADGun::BeginPlay()
 {

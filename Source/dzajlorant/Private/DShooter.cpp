@@ -4,7 +4,9 @@
 #include "DShooter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "MovieSceneTracksComponentTypes.h"
 #include "Camera/CameraComponent.h"
+#include "dzajlorant/Public/DGun.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -31,6 +33,11 @@ void ADShooter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Gun = GetWorld()->SpawnActor<ADGun>(GunClass);
+	GetMesh()->HideBoneByName("weapon_r", EPhysBodyOp::PBO_None);
+	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "WeaponSocket");
+	Gun->SetOwner(this);
+	
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -92,6 +99,11 @@ void ADShooter::StopCrouch()
 	}
 }
 
+void ADShooter::Shoot()
+{
+	Gun->PullTrigger();
+}
+
 // Called every frame
 void ADShooter::Tick(float DeltaTime)
 {
@@ -110,6 +122,7 @@ void ADShooter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ADShooter::Jump);
 		Input->BindAction(CrouchAction, ETriggerEvent::Started, this, &ADShooter::Crouch);
 		Input->BindAction(CrouchAction, ETriggerEvent::Canceled, this, &ADShooter::StopCrouch);
+		Input->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ADShooter::Shoot);
 	}
 }
 

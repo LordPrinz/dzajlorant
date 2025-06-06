@@ -7,6 +7,8 @@
 #include "InputActionValue.h"
 #include "DShooter.generated.h"
 
+class ADGun;
+
 UCLASS()
 class DZAJLORANT_API ADShooter : public ACharacter
 {
@@ -41,11 +43,21 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
 	class UInputAction* CrouchAction;
 
+	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
+	class UInputAction* ShootAction;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ADGun> GunClass;
+
+	UPROPERTY()
+	ADGun* Gun;
+
 	void Move(const FInputActionValue& InputValue);
 	void Look(const FInputActionValue& InputValue);
 	void Jump();
 	void Crouch();
 	void StopCrouch();
+	void Shoot();
 	
 
 public:
