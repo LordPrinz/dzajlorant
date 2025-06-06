@@ -3,6 +3,7 @@
 
 #include "dzajlorant/Public/DGun.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ADGun::ADGun()
@@ -13,13 +14,13 @@ ADGun::ADGun()
 	Root = CreateDefaultSubobject<USceneComponent>("Root");
 	SetRootComponent(Root);
 
-	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh");
-	SkeletalMesh->SetupAttachment(Root);
+	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh");
+	Mesh->SetupAttachment(Root);
 }
 
 void ADGun::PullTrigger()
 {
-	UE_LOG(LogTemp, Warning, TEXT("You ve ben shot"));
+	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, "MuzzleFlashSocket");
 }
 
 // Called when the game starts or when spawned

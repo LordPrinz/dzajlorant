@@ -30,6 +30,8 @@ private:
 	USceneComponent* Root;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	USkeletalMeshComponent* SkeletalMesh;
-	
+	USkeletalMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere, Category = "Components")
+	UParticleSystem* MuzzleFlash;
 };
