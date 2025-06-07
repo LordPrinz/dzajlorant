@@ -33,6 +33,8 @@ void ADShooter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Health = MaxHealth;
+	
 	Gun = GetWorld()->SpawnActor<ADGun>(GunClass);
 	GetMesh()->HideBoneByName("weapon_r", EPhysBodyOp::PBO_None);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "WeaponSocket");
@@ -108,6 +110,16 @@ void ADShooter::Shoot()
 void ADShooter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+float ADShooter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageToApply = FMath::Min(Health, DamageToApply);
+	Health -= DamageToApply;
+	UE_LOG(LogTemp, Warning, TEXT("Health left %f"), Health);
+	return DamageToApply;
 }
 
 // Called to bind functionality to input
