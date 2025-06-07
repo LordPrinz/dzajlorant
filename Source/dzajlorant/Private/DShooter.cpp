@@ -4,7 +4,6 @@
 #include "DShooter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "MovieSceneTracksComponentTypes.h"
 #include "Camera/CameraComponent.h"
 #include "dzajlorant/Public/DGun.h"
 #include "GameFramework/SpringArmComponent.h"

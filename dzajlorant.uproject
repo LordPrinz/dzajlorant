@@ -7,7 +7,10 @@
 		{
 			"Name": "dzajlorant",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"AIModule"
+			]
 		}
 	],
 	"Plugins": [
