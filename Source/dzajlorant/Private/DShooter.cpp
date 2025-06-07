@@ -106,6 +106,11 @@ void ADShooter::Shoot()
 	Gun->PullTrigger();
 }
 
+bool ADShooter::IsDead() const
+{
+	return Health <= 0;
+}
+
 // Called every frame
 void ADShooter::Tick(float DeltaTime)
 {

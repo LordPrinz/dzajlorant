@@ -60,13 +60,16 @@ protected:
 
 	void Move(const FInputActionValue& InputValue);
 	void Look(const FInputActionValue& InputValue);
-	void Jump();
+	virtual void Jump() override;
 	void Crouch();
 	void StopCrouch();
 	void Shoot();
 	
 
 public:
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
