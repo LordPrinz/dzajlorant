@@ -14,6 +14,9 @@ class DZAJLORANT_API UBTTask_ClearBlackboardValue : public UBTTask_BlackboardBas
 {
 	GENERATED_BODY()
 
-	public:
+public:
 	UBTTask_ClearBlackboardValue();
+
+protected:
+	virtual  EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };
