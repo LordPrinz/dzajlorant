@@ -123,13 +123,13 @@ float ADShooter::TakeDamage(float DamageAmount, struct FDamageEvent const& Damag
 	
 	if (IsDead())
 	{
-		DetachFromControllerPendingDestroy();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
 		if (GameMode != nullptr)
 		{
 			GameMode->PawnKilled(this);
 		}
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		DetachFromControllerPendingDestroy();
 	}
 	
 	return DamageToApply;
