@@ -1,11 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "dzajlorant/Public/DGun.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/DamageEvents.h"
-// Sets default values
+
 ADGun::ADGun()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -37,8 +34,11 @@ void ADGun::PullTrigger()
 	FVector End = Rotation.Vector() * MaxRange + Location;
 
 	FHitResult Hit;
-	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location,  End, ECollisionChannel::ECC_GameTraceChannel1);
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
 	
+	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location,  End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 	
 	if (bSuccess)
 	{
