@@ -63,12 +63,12 @@ protected:
 	virtual void Jump() override;
 	void Crouch();
 	void StopCrouch();
-	void Shoot();
-	
 
 public:
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
+
+	void Shoot();
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
