@@ -1,6 +1,7 @@
 #include "DShooter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "ShooterGameMode.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "dzajlorant/Public/DGun.h"
@@ -124,6 +125,11 @@ float ADShooter::TakeDamage(float DamageAmount, struct FDamageEvent const& Damag
 	{
 		DetachFromControllerPendingDestroy();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		AShooterGameMode* GameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>();
+		if (GameMode != nullptr)
+		{
+			GameMode->PawnKilled(this);
+		}
 	}
 	
 	return DamageToApply;
