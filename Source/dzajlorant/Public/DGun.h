@@ -36,11 +36,21 @@ private:
 	UParticleSystem* MuzzleFlash;
 
 	UPROPERTY(EditAnywhere, Category = "Effects")
+	USoundBase* MuzzleSound;
+
+	UPROPERTY(EditAnywhere, Category = "Effects")
 	UParticleSystem* ImpactEffect;
+
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	USoundBase* ImpactSound;
 	
 	UPROPERTY(EditAnywhere)
-	float MaxRange = 3000;
+	float MaxRange = 2000;
 
 	UPROPERTY(EditAnywhere)
 	float Damage = 10;
+
+	bool GunTrace(FHitResult& Hit, FVector& ShotDirection);
+
+	AController* GetOwnerConstroController() const;
 };
