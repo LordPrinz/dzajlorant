@@ -108,6 +108,11 @@ bool ADShooter::IsDead() const
 	return Health <= 0;
 }
 
+float ADShooter::GetHealthPercent() const
+{
+	return Health / MaxHealth; 
+}
+
 // Called every frame
 void ADShooter::Tick(float DeltaTime)
 {
