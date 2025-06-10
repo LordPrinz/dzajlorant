@@ -16,4 +16,7 @@ class DZAJLORANT_API AKillEmAllGameMode : public AShooterGameMode
 	
 public:
 	virtual void PawnKilled(APawn* PawnKilled) override;
+
+	private:
+	void EndGame(bool bIsPlayerWinner);
 };
