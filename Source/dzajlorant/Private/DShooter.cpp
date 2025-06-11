@@ -78,25 +78,8 @@ void ADShooter::Look(const FInputActionValue& InputValue)
 void ADShooter::Jump()
 {
 	Super::Jump();
-	
-	if (bIsCrouched)
-	{
-		Super::UnCrouch();	
-	}
 }
 
-void ADShooter::Crouch()
-{
-	Super::Crouch();
-}
-
-void ADShooter::StopCrouch()
-{
-	if (bIsCrouched)
-	{
-		Super::UnCrouch();	
-	}
-}
 
 void ADShooter::Shoot()
 {
@@ -150,8 +133,6 @@ void ADShooter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ADShooter::Move);
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADShooter::Look);
 		Input->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ADShooter::Jump);
-		Input->BindAction(CrouchAction, ETriggerEvent::Started, this, &ADShooter::Crouch);
-		Input->BindAction(CrouchAction, ETriggerEvent::Canceled, this, &ADShooter::StopCrouch);
 		Input->BindAction(ShootAction, ETriggerEvent::Triggered, this, &ADShooter::Shoot);
 	}
 }

@@ -61,8 +61,6 @@ protected:
 	void Move(const FInputActionValue& InputValue);
 	void Look(const FInputActionValue& InputValue);
 	virtual void Jump() override;
-	void Crouch();
-	void StopCrouch();
 
 public:
 	UFUNCTION(BlueprintPure)
