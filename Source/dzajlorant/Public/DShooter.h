@@ -41,9 +41,6 @@ protected:
 	class UInputAction* LookAction;
 
 	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
-	class UInputAction* CrouchAction;
-
-	UPROPERTY(EditAnywhere, Category = "EnhancedInput")
 	class UInputAction* ShootAction;
 
 	UPROPERTY(EditDefaultsOnly)
